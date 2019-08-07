@@ -37,3 +37,6 @@
 [submodule "eigen-git-mirror"]
 	path = eigen-git-mirror
 	url = https://github.com/eigenteam/eigen-git-mirror.git
+[submodule "computecpp-sdk"]
+	path = computecpp-sdk
+	url = https://github.com/codeplaysoftware/computecpp-sdk.git
