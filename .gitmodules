@@ -1,0 +1,39 @@
+[submodule "boost-cmake"]
+	path = boost-cmake
+	url = https://github.com/UNDEFINED-BEHAVIOR/boost-cmake.git
+[submodule "OpenBLAS"]
+	path = OpenBLAS
+	url = https://github.com/xianyi/OpenBLAS.git
+[submodule "blaze"]
+	path = blaze
+	url = https://bitbucket.org/blaze-lib/blaze.git
+[submodule "SyclParallelSTL"]
+	path = SyclParallelSTL
+	url = https://github.com/KhronosGroup/SyclParallelSTL.git
+[submodule "tbb"]
+	path = tbb
+	url = https://github.com/intel/tbb.git
+[submodule "cpp-taskflow"]
+	path = cpp-taskflow
+	url = https://github.com/cpp-taskflow/cpp-taskflow.git
+[submodule "triSYCL"]
+	path = triSYCL
+	url = https://github.com/triSYCL/triSYCL.git
+[submodule "pybind11"]
+	path = pybind11
+	url = https://github.com/pybind/pybind11.git
+[submodule "xtensor"]
+	path = xtensor
+	url = https://github.com/QuantStack/xtensor.git
+[submodule "xtl"]
+	path = xtl
+	url = https://github.com/QuantStack/xtl.git
+[submodule "xsimd"]
+	path = xsimd
+	url = https://github.com/QuantStack/xsimd.git
+[submodule "xtensor-blas"]
+	path = xtensor-blas
+	url = https://github.com/QuantStack/xtensor-blas.git
+[submodule "eigen-git-mirror"]
+	path = eigen-git-mirror
+	url = https://github.com/eigenteam/eigen-git-mirror.git
