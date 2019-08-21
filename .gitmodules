@@ -40,3 +40,6 @@
 [submodule "computecpp-sdk"]
 	path = computecpp-sdk
 	url = https://github.com/codeplaysoftware/computecpp-sdk.git
+[submodule "MayaAPIUtils"]
+	path = MayaAPIUtils
+	url = https://github.com/UNDEFINED-BEHAVIOR/MayaAPIUtils.git

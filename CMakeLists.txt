@@ -127,5 +127,7 @@ if(PYTHON_MAYA)
     set(PYTHON_EXECUTABLE "${MAYA_INCLUDE_DIR}/../bin/mayapy.exe" CACHE STRING "" FORCE)
 endif()
 
+add_subdirectory(MayaAPIUtils)
+
 set(PYBIND11_TEST OFF CACHE BOOL "" FORCE)
 add_subdirectory(pybind11)
