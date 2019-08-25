@@ -4,38 +4,46 @@ SET ROOT_DIR=%~dp0
 SET LOCAL_LIB_DIR=%TEMP%\_local_lib_cpp
 SET LOCAL_BLD_DIR=%TEMP%\_local_bld_cpp
 
-CALL %ROOT_DIR%_build_for_curdir.cmd zlib
+REM CALL %ROOT_DIR%_build_for_module.cmd zlib
 
-CALL %ROOT_DIR%_build_for_curdir.cmd bzip2_cmake
+REM CALL %ROOT_DIR%_build_for_module.cmd bzip2_cmake
 
-CALL %ROOT_DIR%_build_for_curdir.cmd xtl
+REM CALL %ROOT_DIR%_build_for_module.cmd xtl
 
-SET xtl_DIR ${CMAKE_CURRENT_SOURCE_DIR}/xtl/build
-    CACHE STRING "" FORCE
-)
+REM SET EXTRAARGS=-Dxtl_DIR=%LOCAL_LIB_DIR%\xtl\lib\cmake\xtl
+REM CALL %ROOT_DIR%_build_for_module.cmd xtensor
 
-SET EXTRAARGS=-Dxtl_DIR=%LOCAL_LIB_DIR%\xtl\lib\cmake\xtl
-CALL %ROOT_DIR%_build_for_curdir.cmd xtensor
+REM CALL %ROOT_DIR%_build_for_module.cmd xsimd
 
-CALL %ROOT_DIR%_build_for_curdir.cmd xsimd
+REM REM build boost
 
-CMD /k
+REM REM CD %ROOT_DIR%tbb
+REM REM CALL %ROOT_DIR%_build_for_module.cmd
 
-REM CD %ROOT_DIR%tbb
-REM CALL %ROOT_DIR%_build_for_curdir.cmd
+REM REM Targeting win 10 64 bit
+REM REM https://docs.microsoft.com/en-us/cpp/porting/modifying-winver-and-win32-winnt?view=vs-2019
 
-ECHO Building boost
+REM REM -DICU_INCLUDE_DIR=%ICU_RP%\build\icu_pre-prefix\src\icu_pre\include^
+REM REM -DICU_LIBRARY=%ICU_RP%\build\icu_pre-prefix\src\icu_pre\lib
+REM SET EXTRAARGS=^
+REM -DBZIP2_INCLUDE_DIR=%LOCAL_LIB_DIR%\bzip2_cmake\include ^
+REM -DBZIP2_LIBRARIES=%LOCAL_LIB_DIR%\bzip2_cmake\lib ^
+REM -DZLIB_INCLUDE_DIR=%LOCAL_LIB_DIR%\zlib\include ^
+REM -DZLIB_LIBRARY=%LOCAL_LIB_DIR%\zlib\lib ^
+REM -DBOOST_DISABLE_TESTS=ON ^
+REM -D_WIN32_WINNT=0x0A00
+REM CALL %ROOT_DIR%_build_for_module_no_install.cmd boost-cmake
 
-REM Targeting win 10 64 bit
-REM https://docs.microsoft.com/en-us/cpp/porting/modifying-winver-and-win32-winnt?view=vs-2019
+REM REM Have to copy boost libs manually..
 
-REM -DICU_INCLUDE_DIR=%ICU_RP%\build\icu_pre-prefix\src\icu_pre\include^
-REM -DICU_LIBRARY=%ICU_RP%\build\icu_pre-prefix\src\icu_pre\lib
-SET EXTRAARGS=^
--DCMAKE_INSTALL_PREFIX="%LOCAL_DEP_DIR%" ^
--DCMAKE_PREFIX_PATH="%LOCAL_DEP_DIR%" ^
--DBOOST_DISABLE_TESTS=ON ^
--D_WIN32_WINNT=0x0A00
-CALL %ROOT_DIR%_build_for_curdir.cmd boost-cmake ^
+ROBOCOPY ^
+%LOCAL_BLD_DIR%\boost-cmake\_deps\boost-src\boost ^
+%LOCAL_LIB_DIR%\boost\boost ^
+/E
+
+ROBOCOPY ^
+%LOCAL_BLD_DIR%\boost-cmake\Release ^
+%LOCAL_LIB_DIR%\boost\lib ^
+/E
 
 CMD /k
