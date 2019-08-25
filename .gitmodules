@@ -1,6 +1,3 @@
-[submodule "boost-cmake"]
-	path = boost-cmake
-	url = https://github.com/UNDEFINED-BEHAVIOR/boost-cmake.git
 [submodule "OpenBLAS"]
 	path = OpenBLAS
 	url = https://github.com/xianyi/OpenBLAS.git
@@ -43,3 +40,15 @@
 [submodule "MayaAPIUtils"]
 	path = MayaAPIUtils
 	url = https://github.com/UNDEFINED-BEHAVIOR/MayaAPIUtils.git
+[submodule "boost-cmake"]
+	path = boost-cmake
+	url = https://github.com/Orphis/boost-cmake.git
+[submodule "icu-cmake"]
+	path = icu-cmake
+	url = https://github.com/viaduck/icu-cmake.git
+[submodule "zlib"]
+	path = zlib
+	url = https://github.com/commontk/zlib.git
+[submodule "bzip2_cmake"]
+	path = bzip2_cmake
+	url = https://github.com/osrf/bzip2_cmake.git
