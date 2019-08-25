@@ -1,15 +1,45 @@
-ECHO -----------------Building for %CD%
+SET FOLP=%1
 
-MKDIR build
-PUSHD build
+ECHO.
+ECHO ####################################################
+ECHO ##### Building %FOLP%
+ECHO ####################################################
+ECHO.
 
+REM https://stackoverflow.com/a/935681
+SET RESTVAR=
+SHIFT
+:loop1
+    IF "%1"=="" GOTO after_loop
+    SET RESTVAR=%RESTVAR% %1
+    SHIFT
+GOTO loop1
+:after_loop
+
+SET SRC_FOL=%ROOT_DIR%%FOLP%
+SET BLD_FOL=%LOCAL_BLD_DIR%\%FOLP%
+SET INST_FOL=%LOCAL_LIB_DIR%\%FOLP%
+
+ECHO %FOLP%
+ECHO %SRC_FOL%
+
+MKDIR %BLD_FOL%
+PUSHD %BLD_FOL%
+
+@ECHO ON
 cmake ^
-.. ^
--A x64 %*
+%SRC_FOL% ^
+-A x64 ^
+-DCMAKE_INSTALL_PREFIX=%INST_FOL% ^
+-DCMAKE_PREFIX_PATH=%INST_FOL% %EXTRAARGS%
 
 cmake ^
 --build . ^
 --parallel 8 ^
---config Release
+--config Release ^
+--target install
+@ECHO OFF
+
+SET EXTRAARGS=
 
 POPD
