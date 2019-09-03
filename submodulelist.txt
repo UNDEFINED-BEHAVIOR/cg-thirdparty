@@ -21,3 +21,4 @@ https://github.com/QuantStack/xsimd.git
 https://github.com/QuantStack/xtensor-blas.git
 
 https://github.com/fmtlib/fmt.git
+https://github.com/nholthaus/units.git
