@@ -13,6 +13,9 @@ CALL %ROOT_DIR%_build_for_module.cmd xtl
 SET EXTRAARGS=-Dxtl_DIR=%LOCAL_LIB_DIR%\xtl\lib\cmake\xtl
 CALL %ROOT_DIR%_build_for_module.cmd xtensor
 
+SET EXTRAARGS=-Dxtl_DIR=%LOCAL_LIB_DIR%\xtl\lib\cmake\xtl -Dxtensor_DIR=%LOCAL_LIB_DIR%\xtensor\lib\cmake\xtensor
+CALL %ROOT_DIR%_build_for_module.cmd xtensor-blas
+
 CALL %ROOT_DIR%_build_for_module.cmd xsimd
 
 REM build boost

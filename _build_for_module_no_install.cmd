@@ -35,7 +35,7 @@ cmake ^
 
 cmake ^
 --build . ^
---parallel 8 ^
+--parallel %NUMBER_OF_PROCESSORS% ^
 --config Release
 
 SET EXTRAARGS=

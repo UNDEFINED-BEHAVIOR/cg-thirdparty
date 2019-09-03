@@ -35,7 +35,7 @@ cmake ^
 
 cmake ^
 --build . ^
---parallel 8 ^
+--parallel %NUMBER_OF_PROCESSORS% ^
 --config Release ^
 --target install
 @ECHO OFF
