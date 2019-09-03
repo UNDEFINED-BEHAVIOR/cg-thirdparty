@@ -4,13 +4,12 @@ cmake_minimum_required(VERSION 3.14)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+if(NOT LOCAL_LIB_DIR)
+    message(FATAL "LOCAL_LIB_DIR variable is required")
+endif()
+
 # add_subdirectory(boost-cmake)
 # add_subdirectory(OpenBLAS)
-
-set(
-    LOCAL_LIB_DIR
-    $ENV{TEMP}/_local_lib_cpp
-)
 
 # --general envs
 #boost
@@ -37,7 +36,7 @@ set(
 # for openblas
 set(
     CMAKE_INCLUDE_PATH
-    ${LOCAL_LIB_DIR}/OpenBLAS/include
+    OpenBLAS
     CACHE STRING "" FORCE
 )
 set(
@@ -56,7 +55,30 @@ set(
     CACHE STRING "" FORCE
 )
 
+add_library(
+    BLASLib
+    INTERFACE
+)
+target_sources(
+    BLASLib
+    INTERFACE
+    ${LOCAL_LIB_DIR}/OpenBLAS/lib/libopenblas.dll
+)
+target_link_libraries(
+    BLASLib
+    INTERFACE
+    ${BLAS_LIBRARIES}
+)
+# set_target_properties(
+#     BLASLib
+#     PROPERTIES
+#     LINKER_LANGUAGE C
+# )
+
 # --
+
+add_subdirectory(fmt)
+add_subdirectory(units)
 
 # parallelizer series
 # disable because project isn't private
@@ -83,34 +105,35 @@ set(
 )
 add_subdirectory(triSYCL)
 
-# # todo: resolve
-# set(
-#     ComputeCpp_DIR
-#     ${CMAKE_CURRENT_SOURCE_DIR}/computecpp-sdk
-#     CACHE STRING "" FORCE
-# )
-# set(
-#     COMPUTECPP_SDK_BUILD_TESTS OFF
-#     CACHE BOOL "" FORCE
-# )
-# set(
-#     COMPUTECPP_SDK_USE_OPENMP ON
-#     CACHE BOOL "" FORCE
-# )
-# add_subdirectory(computecpp-sdk)
 # add_subdirectory(SyclParallelSTL)
 
 set(
     EIGEN_TEST_CXX11 ON 
     CACHE BOOL "" FORCE
 )
+set(
+    EIGEN_USE_BLAS ON 
+    CACHE BOOL "" FORCE
+)
+set(
+    EIGEN_USE_LAPACKE ON 
+    CACHE BOOL "" FORCE
+)
+set(
+    EIGEN_TEST_EXTERNAL_BLAS ON
+    CACHE BOOL "" FORCE
+)
 add_subdirectory(eigen-git-mirror)
 
 # blaze
-add_subdirectory(blaze)
+# add_subdirectory(blaze)
 
 
 # xtensor series
+set(
+    XTENSOR_USE_XSIMD ON
+    CACHE BOOL "" FORCE
+)
 set(
     xtl_DIR
     ${LOCAL_LIB_DIR}/xtl/lib/pkgconfig
@@ -126,10 +149,39 @@ add_subdirectory(xtl)
 add_subdirectory(xtensor)
 add_subdirectory(xtensor-blas)
 
+if(XTENSOR_USE_XSIMD)
+    # todo fix this
+    target_include_directories(
+        xtensor
+        INTERFACE
+        ${LOCAL_LIB_DIR}/xtensor-blas/include
+    )
+    # target_link_libraries(
+    #     xtensor
+    #     INTERFACE
+    #     BLASLib
+    # )
+    target_link_libraries(
+        xtensor
+        INTERFACE
+        ${BLAS_LIBRARIES}
+    )
+    # add_custom_command(
+    #     TARGET xtensor POST_BUILD 
+    #     COMMAND 
+    #     ${CMAKE_COMMAND} -E copy_if_different
+    #     "${LOCAL_LIB_DIR}/OpenBlas/lib/libopenblas.dll"
+    #     $<TARGET_FILE_DIR:${CMAKE_BINARY_DIR}>
+    # )
+endif()
+
 option(PYTHON_MAYA "Use maya python" OFF)
 if(PYTHON_MAYA)
     find_package(Maya REQUIRED)
-    set(PYTHON_EXECUTABLE "${MAYA_INCLUDE_DIR}/../bin/mayapy.exe" CACHE STRING "" FORCE)
+    set(
+        PYTHON_EXECUTABLE "${MAYA_INCLUDE_DIR}/../bin/mayapy.exe" 
+        CACHE STRING "" FORCE
+    )
 endif()
 
 add_subdirectory(MayaAPIUtils)
