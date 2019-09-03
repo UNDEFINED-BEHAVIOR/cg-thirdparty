@@ -7,6 +7,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # add_subdirectory(boost-cmake)
 # add_subdirectory(OpenBLAS)
 
+set(
+    LOCAL_LIB_DIR
+    $ENV{TEMP}/_local_lib_cpp
+)
+
 # --general envs
 #boost
 set(
@@ -20,24 +25,24 @@ set(
 
 set(
     BOOST_ROOT
-    ${CMAKE_CURRENT_SOURCE_DIR}/boost-cmake/build/_deps/boost-src
+    ${LOCAL_LIB_DIR}/boost-cmake
     CACHE STRING "" FORCE
 )
 set(
     BOOST_LIBRARYDIR
-    ${CMAKE_CURRENT_SOURCE_DIR}/boost-cmake/build/Release
+    ${LOCAL_LIB_DIR}/boost-cmake/lib
     CACHE STRING "" FORCE
 )
 
 # for openblas
 set(
     CMAKE_INCLUDE_PATH
-    ${CMAKE_CURRENT_SOURCE_DIR}/OpenBLAS
+    ${LOCAL_LIB_DIR}/OpenBLAS/include
     CACHE STRING "" FORCE
 )
 set(
     BLAS_LIBDIR
-    ${CMAKE_CURRENT_SOURCE_DIR}/OpenBLAS/build/lib/RELEASE
+    ${LOCAL_LIB_DIR}/OpenBLAS/lib
     CACHE STRING "" FORCE
 )
 set(
@@ -108,12 +113,12 @@ add_subdirectory(blaze)
 # xtensor series
 set(
     xtl_DIR
-    ${CMAKE_CURRENT_SOURCE_DIR}/xtl/build
+    ${LOCAL_LIB_DIR}/xtl/lib/pkgconfig
     CACHE STRING "" FORCE
 )
 set(
     xtensor_DIR
-    ${CMAKE_CURRENT_SOURCE_DIR}/xtensor/build
+    ${LOCAL_LIB_DIR}/xtensor/lib/pkgconfig
     CACHE STRING "" FORCE
 )
 add_subdirectory(xsimd)

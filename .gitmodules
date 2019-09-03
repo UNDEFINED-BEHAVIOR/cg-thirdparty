@@ -52,3 +52,6 @@
 [submodule "bzip2_cmake"]
 	path = bzip2_cmake
 	url = https://github.com/osrf/bzip2_cmake.git
+[submodule "fmt"]
+	path = fmt
+	url = https://github.com/fmtlib/fmt.git
