@@ -135,6 +135,10 @@ set(
     CACHE BOOL "" FORCE
 )
 set(
+    USE_OPENBLAS ON
+    CACHE BOOL "" FORCE
+)
+set(
     xtl_DIR
     ${LOCAL_LIB_DIR}/xtl/lib/pkgconfig
     CACHE STRING "" FORCE
@@ -165,6 +169,7 @@ if(XTENSOR_USE_XSIMD)
         xtensor
         INTERFACE
         ${BLAS_LIBRARIES}
+        ${LAPACK_LIBRARIES}
     )
     # add_custom_command(
     #     TARGET xtensor POST_BUILD 
