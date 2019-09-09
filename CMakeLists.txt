@@ -148,6 +148,11 @@ set(
     CACHE STRING "" FORCE
 )
 set(
+    xsimd_DIR
+    ${LOCAL_LIB_DIR}/xsimd/lib/cmake/xsimd
+    CACHE STRING "" FORCE
+)
+set(
     xtensor_DIR
     ${LOCAL_LIB_DIR}/xtensor/lib/pkgconfig
     CACHE STRING "" FORCE
