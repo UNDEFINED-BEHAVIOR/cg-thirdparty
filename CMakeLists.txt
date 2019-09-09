@@ -123,7 +123,7 @@ set(
     EIGEN_TEST_EXTERNAL_BLAS ON
     CACHE BOOL "" FORCE
 )
-add_subdirectory(eigen-git-mirror)
+# add_subdirectory(eigen-git-mirror)
 
 # blaze
 # add_subdirectory(blaze)
@@ -132,6 +132,10 @@ add_subdirectory(eigen-git-mirror)
 # xtensor series
 set(
     XTENSOR_USE_XSIMD ON
+    CACHE BOOL "" FORCE
+)
+set(
+    XTENSOR_USE_OPENMP ON
     CACHE BOOL "" FORCE
 )
 set(
@@ -160,24 +164,12 @@ if(XTENSOR_USE_XSIMD)
         INTERFACE
         ${LOCAL_LIB_DIR}/xtensor-blas/include
     )
-    # target_link_libraries(
-    #     xtensor
-    #     INTERFACE
-    #     BLASLib
-    # )
     target_link_libraries(
         xtensor
         INTERFACE
         ${BLAS_LIBRARIES}
         ${LAPACK_LIBRARIES}
     )
-    # add_custom_command(
-    #     TARGET xtensor POST_BUILD 
-    #     COMMAND 
-    #     ${CMAKE_COMMAND} -E copy_if_different
-    #     "${LOCAL_LIB_DIR}/OpenBlas/lib/libopenblas.dll"
-    #     $<TARGET_FILE_DIR:${CMAKE_BINARY_DIR}>
-    # )
 endif()
 
 option(PYTHON_MAYA "Use maya python" OFF)
