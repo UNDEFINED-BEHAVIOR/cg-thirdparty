@@ -4,6 +4,15 @@ cmake_minimum_required(VERSION 3.14)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+option(USE_BLAS "Use blas for all applicable libraries" OFF)
+option(USE_MAYAPY "Use maya python" OFF)
+option(USE_EIGEN "Use eigen3" OFF)
+
+message("CG Thirdparty:")
+message("BLAS active: ${USE_BLAS}")
+message("Using Mayapy as python: ${USE_MAYAPY}")
+message("Eigen active: ${USE_EIGEN}")
+
 if(NOT LOCAL_LIB_DIR)
     message(FATAL "LOCAL_LIB_DIR variable is required")
 endif()
@@ -34,46 +43,48 @@ set(
 )
 
 # for openblas
-set(
-    CMAKE_INCLUDE_PATH
-    OpenBLAS
-    CACHE STRING "" FORCE
-)
-set(
-    BLAS_LIBDIR
-    ${LOCAL_LIB_DIR}/OpenBLAS/lib
-    CACHE STRING "" FORCE
-)
-set(
-    LAPACK_LIBRARIES
-    ${BLAS_LIBDIR}/openblas.lib
-    CACHE STRING "" FORCE
-)
-set(
-    BLAS_LIBRARIES
-    ${BLAS_LIBDIR}/openblas.lib
-    CACHE STRING "" FORCE
-)
+if(USE_BLAS)
+    set(
+        CMAKE_INCLUDE_PATH
+        OpenBLAS
+        CACHE STRING "" FORCE
+    )
+    set(
+        BLAS_LIBDIR
+        ${LOCAL_LIB_DIR}/OpenBLAS/lib
+        CACHE STRING "" FORCE
+    )
+    set(
+        LAPACK_LIBRARIES
+        ${BLAS_LIBDIR}/openblas.lib
+        CACHE STRING "" FORCE
+    )
+    set(
+        BLAS_LIBRARIES
+        ${BLAS_LIBDIR}/openblas.lib
+        CACHE STRING "" FORCE
+    )
 
-add_library(
-    BLASLib
-    INTERFACE
-)
-target_sources(
-    BLASLib
-    INTERFACE
-    ${LOCAL_LIB_DIR}/OpenBLAS/lib/libopenblas.dll
-)
-target_link_libraries(
-    BLASLib
-    INTERFACE
-    ${BLAS_LIBRARIES}
-)
-# set_target_properties(
-#     BLASLib
-#     PROPERTIES
-#     LINKER_LANGUAGE C
-# )
+    add_library(
+        BLASLib
+        INTERFACE
+    )
+    target_sources(
+        BLASLib
+        INTERFACE
+        ${LOCAL_LIB_DIR}/OpenBLAS/lib/libopenblas.dll
+    )
+    target_link_libraries(
+        BLASLib
+        INTERFACE
+        ${BLAS_LIBRARIES}
+    )
+    # set_target_properties(
+    #     BLASLib
+    #     PROPERTIES
+    #     LINKER_LANGUAGE C
+    # )
+endif()
 
 # --
 
@@ -107,23 +118,25 @@ add_subdirectory(triSYCL)
 
 # add_subdirectory(SyclParallelSTL)
 
-set(
-    EIGEN_TEST_CXX11 ON 
-    CACHE BOOL "" FORCE
-)
-set(
-    EIGEN_USE_BLAS ON 
-    CACHE BOOL "" FORCE
-)
-set(
-    EIGEN_USE_LAPACKE ON 
-    CACHE BOOL "" FORCE
-)
-set(
-    EIGEN_TEST_EXTERNAL_BLAS ON
-    CACHE BOOL "" FORCE
-)
-# add_subdirectory(eigen-git-mirror)
+if(USE_EIGEN)
+    set(
+        EIGEN_TEST_CXX11 ON 
+        CACHE BOOL "" FORCE
+    )
+    set(
+        EIGEN_USE_BLAS ON 
+        CACHE BOOL "" FORCE
+    )
+    set(
+        EIGEN_USE_LAPACKE ON 
+        CACHE BOOL "" FORCE
+    )
+    set(
+        EIGEN_TEST_EXTERNAL_BLAS ON
+        CACHE BOOL "" FORCE
+    )
+    add_subdirectory(eigen-git-mirror)
+endif()
 
 # blaze
 # add_subdirectory(blaze)
@@ -139,12 +152,16 @@ set(
     CACHE BOOL "" FORCE
 )
 set(
-    USE_OPENBLAS ON
+    BUILD_TESTS OFF
+    CACHE BOOL "" FORCE
+)
+set(
+    BUILD_BENCHMARK OFF
     CACHE BOOL "" FORCE
 )
 set(
     xtl_DIR
-    ${LOCAL_LIB_DIR}/xtl/lib/pkgconfig
+    ${LOCAL_LIB_DIR}/xtl/lib/cmake/xtl
     CACHE STRING "" FORCE
 )
 set(
@@ -160,9 +177,15 @@ set(
 add_subdirectory(xsimd)
 add_subdirectory(xtl)
 add_subdirectory(xtensor)
-add_subdirectory(xtensor-blas)
 
-if(XTENSOR_USE_XSIMD)
+if(USE_BLAS)
+
+    # xtensor
+    set(
+        USE_OPENBLAS ON
+        CACHE BOOL "" FORCE
+    )
+    add_subdirectory(xtensor-blas)
     # todo fix this
     target_include_directories(
         xtensor
@@ -177,8 +200,8 @@ if(XTENSOR_USE_XSIMD)
     )
 endif()
 
-option(PYTHON_MAYA "Use maya python" OFF)
-if(PYTHON_MAYA)
+
+if(USE_MAYAPY)
     find_package(Maya REQUIRED)
     set(
         PYTHON_EXECUTABLE "${MAYA_INCLUDE_DIR}/../bin/mayapy.exe" 
