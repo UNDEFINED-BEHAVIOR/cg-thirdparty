@@ -10,12 +10,6 @@
 [submodule "tbb"]
 	path = tbb
 	url = https://github.com/intel/tbb.git
-[submodule "cpp-taskflow"]
-	path = cpp-taskflow
-	url = https://github.com/cpp-taskflow/cpp-taskflow.git
-[submodule "triSYCL"]
-	path = triSYCL
-	url = https://github.com/triSYCL/triSYCL.git
 [submodule "pybind11"]
 	path = pybind11
 	url = https://github.com/pybind/pybind11.git
@@ -55,3 +49,9 @@
 [submodule "units"]
 	path = units
 	url = https://github.com/nholthaus/units.git
+[submodule "cpp-taskflow"]
+	path = cpp-taskflow
+	url = https://github.com/UNDEFINED-BEHAVIOR/cpp-taskflow.git
+[submodule "triSYCL"]
+	path = triSYCL
+	url = https://github.com/UNDEFINED-BEHAVIOR/triSYCL.git

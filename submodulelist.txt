@@ -10,8 +10,8 @@ https://github.com/codeplaysoftware/computecpp-sdk.git
 https://github.com/KhronosGroup/SyclParallelSTL.git
 
 https://github.com/intel/tbb.git
-https://github.com/cpp-taskflow/cpp-taskflow.git
-https://github.com/triSYCL/triSYCL.git
+https://github.com/UNDEFINED-BEHAVIOR/cpp-taskflow.git
+https://github.com/UNDEFINED-BEHAVIOR/triSYCL.git
 
 https://github.com/pybind/pybind11.git
 
