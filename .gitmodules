@@ -55,3 +55,6 @@
 [submodule "vexcl"]
 	path = vexcl
 	url = https://github.com/ddemidov/vexcl.git
+[submodule "zstd"]
+	path = zstd
+	url = https://github.com/facebook/zstd.git

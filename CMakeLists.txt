@@ -31,60 +31,49 @@ SET(
     CACHE BOOL "" FORCE
 )
 
-# SET(
-#     BOOST_ROOT
-#     ${LOCAL_LIB_DIR}/boost-cmake
-#     CACHE STRING "" FORCE
-# )
-SET(
-    BOOST_LIBRARYDIR
-    ${LOCAL_LIB_DIR}/boost-cmake/lib
-    CACHE STRING "" FORCE
-)
-
 # for openblas
-# IF(USE_BLAS)
-#     SET(
-#         CMAKE_INCLUDE_PATH
-#         OpenBLAS
-#         CACHE STRING "" FORCE
-#     )
-#     SET(
-#         BLAS_LIBDIR
-#         ${LOCAL_LIB_DIR}/OpenBLAS/lib
-#         CACHE STRING "" FORCE
-#     )
-#     SET(
-#         LAPACK_LIBRARIES
-#         ${BLAS_LIBDIR}/openblas.lib
-#         CACHE STRING "" FORCE
-#     )
-#     SET(
-#         BLAS_LIBRARIES
-#         ${BLAS_LIBDIR}/openblas.lib
-#         CACHE STRING "" FORCE
-#     )
+IF(USE_BLAS)
+    SET(
+        CMAKE_INCLUDE_PATH
+        OpenBLAS
+        CACHE STRING "" FORCE
+    )
+    SET(
+        BLAS_LIBDIR
+        lib-blas/lib
+        CACHE STRING "" FORCE
+    )
+    SET(
+        LAPACK_LIBRARIES
+        lib-blas/openblas.lib
+        CACHE STRING "" FORCE
+    )
+    SET(
+        BLAS_LIBRARIES
+        lib-blas/openblas.lib
+        CACHE STRING "" FORCE
+    )
 
-#     add_library(
-#         BLASLib
-#         INTERFACE
-#     )
-#     target_sources(
-#         BLASLib
-#         INTERFACE
-#         ${LOCAL_LIB_DIR}/OpenBLAS/lib/libopenblas.dll
-#     )
-#     target_link_libraries(
-#         BLASLib
-#         INTERFACE
-#         ${BLAS_LIBRARIES}
-#     )
-#     # set_target_properties(
-#     #     BLASLib
-#     #     PROPERTIES
-#     #     LINKER_LANGUAGE C
-#     # )
-# ENDIF()
+    add_library(
+        BLASLib
+        INTERFACE
+    )
+    target_sources(
+        BLASLib
+        INTERFACE
+        ${LOCAL_LIB_DIR}/OpenBLAS/lib/libopenblas.dll
+    )
+    target_link_libraries(
+        BLASLib
+        INTERFACE
+        ${BLAS_LIBRARIES}
+    )
+    # set_target_properties(
+    #     BLASLib
+    #     PROPERTIES
+    #     LINKER_LANGUAGE C
+    # )
+ENDIF()
 
 # --
 
@@ -112,26 +101,6 @@ SET(
     CACHE BOOL "" FORCE
 )
 ADD_SUBDIRECTORY(triSYCL)
-
-IF(USE_EIGEN)
-    SET(
-        EIGEN_TEST_CXX11 ON 
-        CACHE BOOL "" FORCE
-    )
-    SET(
-        EIGEN_USE_BLAS ON 
-        CACHE BOOL "" FORCE
-    )
-    SET(
-        EIGEN_USE_LAPACKE ON 
-        CACHE BOOL "" FORCE
-    )
-    SET(
-        EIGEN_TEST_EXTERNAL_BLAS ON
-        CACHE BOOL "" FORCE
-    )
-    ADD_SUBDIRECTORY(eigen-git-mirror)
-ENDIF()
 
 # xtensor series
 SET(
@@ -162,15 +131,37 @@ SET(
 )
 SET(
     xtensor_DIR
-    ${LOCAL_LIB_DIR}/xtensor/lib/pkgconfig
+    ${LOCAL_LIB_DIR}/xtensor/lib/cmake/xtensor
     CACHE STRING "" FORCE
 )
 ADD_SUBDIRECTORY(xsimd)
 ADD_SUBDIRECTORY(xtl)
 ADD_SUBDIRECTORY(xtensor)
 
-IF(USE_BLAS)
+IF(USE_EIGEN)
+    SET(
+        EIGEN_TEST_CXX11 ON 
+        CACHE BOOL "" FORCE
+    )
+    IF(USE_BLAS)
+        SET(
+            EIGEN_USE_BLAS ON 
+            CACHE BOOL "" FORCE
+        )
+        SET(
+            EIGEN_USE_LAPACKE ON 
+            CACHE BOOL "" FORCE
+        )
+        SET(
+            EIGEN_TEST_EXTERNAL_BLAS ON
+            CACHE BOOL "" FORCE
+        )
+    ENDIF()
+    ADD_SUBDIRECTORY(eigen-git-mirror)
+ENDIF()
 
+
+IF(USE_BLAS)
     # xtensor
     SET(
         USE_OPENBLAS ON

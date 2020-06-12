@@ -9,8 +9,8 @@ SET LOCAL_BLD_DIR=%TEMP%\_local_bld_cpp
 IF [%BOOST_ROOT%] NEQ [] GOTO CONTINUE1
 
 :USE_DEFAULT_INSTALL
-ECHO Warning: BOOST_INSTALL_PATH has not been specified, using default install path
-SET BOOST_ROOT=%ROOT_DIR%boost-lib
+ECHO Warning: BOOST_ROOT has not been specified, using default install path
+SET BOOST_ROOT=%ROOT_DIR%lib-boost
 
 :CONTINUE1
 
@@ -32,8 +32,8 @@ variant=debug,release ^
 address-model=64 ^
 link=static ^
 threading=multi ^
-runtime-link=static ^
-. > build.log
+runtime-link=static,shared ^
+.
 
 POPD
 
