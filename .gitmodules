@@ -43,18 +43,18 @@
 [submodule "triSYCL"]
 	path = triSYCL
 	url = https://github.com/UNDEFINED-BEHAVIOR/triSYCL.git
-[submodule "_preinstall/vexcl"]
-	path = _preinstall/vexcl
+[submodule "vexcl"]
+	path = vexcl
 	url = https://github.com/ddemidov/vexcl.git
-[submodule "_preinstall/bzip2_cmake"]
-	path = _preinstall/bzip2_cmake
+[submodule "bzip2_cmake"]
+	path = bzip2_cmake
 	url = https://github.com/osrf/bzip2_cmake.git
-[submodule "_preinstall/icu-cmake"]
-	path = _preinstall/icu-cmake
+[submodule "icu-cmake"]
+	path = icu-cmake
 	url = https://github.com/viaduck/icu-cmake.git
-[submodule "_preinstall/zlib"]
-	path = _preinstall/zlib
+[submodule "zlib"]
+	path = zlib
 	url = https://github.com/commontk/zlib.git
-[submodule "_preinstall/zstd"]
-	path = _preinstall/zstd
+[submodule "zstd"]
+	path = zstd
 	url = https://github.com/facebook/zstd.git
