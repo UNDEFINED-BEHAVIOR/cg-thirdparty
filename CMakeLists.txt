@@ -1,65 +1,65 @@
-cmake_minimum_required(VERSION 3.14)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.14)
 
 # project will be c++17!
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+SET(CMAKE_CXX_STANDARD 17)
+SET(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-option(USE_BLAS "Use blas for all applicable libraries" OFF)
-option(USE_MAYAPY "Use maya python" OFF)
-option(USE_EIGEN "Use eigen3" OFF)
+OPTION(USE_BLAS "Use blas for all applicable libraries" OFF)
+OPTION(USE_MAYAPY "Use maya python" OFF)
+OPTION(USE_EIGEN "Use eigen3" OFF)
 
-message("CG Thirdparty:")
-message("BLAS active: ${USE_BLAS}")
-message("Using Mayapy as python: ${USE_MAYAPY}")
-message("Eigen active: ${USE_EIGEN}")
+MESSAGE("CG Thirdparty:")
+MESSAGE("BLAS active: ${USE_BLAS}")
+MESSAGE("Using Mayapy as python: ${USE_MAYAPY}")
+MESSAGE("Eigen active: ${USE_EIGEN}")
 
-if(NOT LOCAL_LIB_DIR)
-    message(FATAL "LOCAL_LIB_DIR variable is required")
-endif()
+IF(NOT LOCAL_LIB_DIR)
+    MESSAGE(FATAL "LOCAL_LIB_DIR variable is required")
+ENDIF()
 
-# add_subdirectory(boost-cmake)
-# add_subdirectory(OpenBLAS)
+# ADD_SUBDIRECTORY(boost-cmake)
+# ADD_SUBDIRECTORY(OpenBLAS)
 
 # --general envs
 #boost
-set(
+SET(
     BUILD_TESTING OFF 
     CACHE BOOL "" FORCE
 )
-set(
+SET(
     CMAKE_TESTING_ENABLED OFF 
     CACHE BOOL "" FORCE
 )
 
-set(
+SET(
     BOOST_ROOT
     ${LOCAL_LIB_DIR}/boost-cmake
     CACHE STRING "" FORCE
 )
-set(
+SET(
     BOOST_LIBRARYDIR
     ${LOCAL_LIB_DIR}/boost-cmake/lib
     CACHE STRING "" FORCE
 )
 
 # for openblas
-if(USE_BLAS)
-    set(
+IF(USE_BLAS)
+    SET(
         CMAKE_INCLUDE_PATH
         OpenBLAS
         CACHE STRING "" FORCE
     )
-    set(
+    SET(
         BLAS_LIBDIR
         ${LOCAL_LIB_DIR}/OpenBLAS/lib
         CACHE STRING "" FORCE
     )
-    set(
+    SET(
         LAPACK_LIBRARIES
         ${BLAS_LIBDIR}/openblas.lib
         CACHE STRING "" FORCE
     )
-    set(
+    SET(
         BLAS_LIBRARIES
         ${BLAS_LIBDIR}/openblas.lib
         CACHE STRING "" FORCE
@@ -84,108 +84,99 @@ if(USE_BLAS)
     #     PROPERTIES
     #     LINKER_LANGUAGE C
     # )
-endif()
+ENDIF()
 
 # --
 
-add_subdirectory(fmt)
-add_subdirectory(units)
+ADD_SUBDIRECTORY(fmt)
+ADD_SUBDIRECTORY(units)
 
 # parallelizer series
-# disable because project isn't private
-# set(TBB_BUILD_TESTS OFF CACHE BOOL "" FORCE)
-# add_subdirectory(tbb)
 
-set(
+SET(
     TF_BUILD_TESTS OFF 
     CACHE BOOL "" FORCE
 )
-set(
+SET(
     TF_BUILD_EXAMPLES OFF 
     CACHE BOOL "" FORCE
 )
-add_subdirectory(cpp-taskflow)
+ADD_SUBDIRECTORY(cpp-taskflow)
 
-set(
+SET(
     TRISYCL_OPENCL ON
     CACHE BOOL "" FORCE
 )
-set(
+SET(
     TRISYCL_OPENMP ON
     CACHE BOOL "" FORCE
 )
-add_subdirectory(triSYCL)
+ADD_SUBDIRECTORY(triSYCL)
 
-# add_subdirectory(SyclParallelSTL)
-
-if(USE_EIGEN)
-    set(
+IF(USE_EIGEN)
+    SET(
         EIGEN_TEST_CXX11 ON 
         CACHE BOOL "" FORCE
     )
-    set(
+    SET(
         EIGEN_USE_BLAS ON 
         CACHE BOOL "" FORCE
     )
-    set(
+    SET(
         EIGEN_USE_LAPACKE ON 
         CACHE BOOL "" FORCE
     )
-    set(
+    SET(
         EIGEN_TEST_EXTERNAL_BLAS ON
         CACHE BOOL "" FORCE
     )
-    add_subdirectory(eigen-git-mirror)
-endif()
-
-# blaze
-# add_subdirectory(blaze)
-
+    ADD_SUBDIRECTORY(eigen-git-mirror)
+ENDIF()
 
 # xtensor series
-set(
+SET(
     XTENSOR_USE_XSIMD ON
     CACHE BOOL "" FORCE
 )
-set(
+SET(
     XTENSOR_USE_OPENMP ON
     CACHE BOOL "" FORCE
 )
-set(
+SET(
     BUILD_TESTS OFF
     CACHE BOOL "" FORCE
 )
-set(
+SET(
     BUILD_BENCHMARK OFF
     CACHE BOOL "" FORCE
 )
-set(
+SET(
     xtl_DIR
     ${LOCAL_LIB_DIR}/xtl/lib/cmake/xtl
     CACHE STRING "" FORCE
 )
-set(
+SET(
     xsimd_DIR
     ${LOCAL_LIB_DIR}/xsimd/lib/cmake/xsimd
     CACHE STRING "" FORCE
 )
-set(
+SET(
     xtensor_DIR
     ${LOCAL_LIB_DIR}/xtensor/lib/pkgconfig
     CACHE STRING "" FORCE
 )
-add_subdirectory(xsimd)
-add_subdirectory(xtl)
-add_subdirectory(xtensor)
+ADD_SUBDIRECTORY(xsimd)
+ADD_SUBDIRECTORY(xtl)
+ADD_SUBDIRECTORY(xtensor)
 
-if(USE_BLAS)
+IF(USE_BLAS)
 
     # xtensor
-    set(
+    SET(
         USE_OPENBLAS ON
         CACHE BOOL "" FORCE
     )
-    add_subdirectory(xtensor-blas)
+    ADD_SUBDIRECTORY(xtensor-blas)
     # todo fix this
     target_include_directories(
         xtensor
@@ -198,18 +189,18 @@ if(USE_BLAS)
         ${BLAS_LIBRARIES}
         ${LAPACK_LIBRARIES}
     )
-endif()
+ENDIF()
 
 
-if(USE_MAYAPY)
+IF(USE_MAYAPY)
     find_package(Maya REQUIRED)
-    set(
+    SET(
         PYTHON_EXECUTABLE "${MAYA_INCLUDE_DIR}/../bin/mayapy.exe" 
         CACHE STRING "" FORCE
     )
-endif()
+ENDIF()
 
-add_subdirectory(MayaAPIUtils)
+ADD_SUBDIRECTORY(MayaAPIUtils)
 
-set(PYBIND11_TEST OFF CACHE BOOL "" FORCE)
-add_subdirectory(pybind11)
+SET(PYBIND11_TEST OFF CACHE BOOL "" FORCE)
+ADD_SUBDIRECTORY(pybind11)
