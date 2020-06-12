@@ -31,11 +31,11 @@ SET(
     CACHE BOOL "" FORCE
 )
 
-SET(
-    BOOST_ROOT
-    ${LOCAL_LIB_DIR}/boost-cmake
-    CACHE STRING "" FORCE
-)
+# SET(
+#     BOOST_ROOT
+#     ${LOCAL_LIB_DIR}/boost-cmake
+#     CACHE STRING "" FORCE
+# )
 SET(
     BOOST_LIBRARYDIR
     ${LOCAL_LIB_DIR}/boost-cmake/lib
@@ -43,48 +43,48 @@ SET(
 )
 
 # for openblas
-IF(USE_BLAS)
-    SET(
-        CMAKE_INCLUDE_PATH
-        OpenBLAS
-        CACHE STRING "" FORCE
-    )
-    SET(
-        BLAS_LIBDIR
-        ${LOCAL_LIB_DIR}/OpenBLAS/lib
-        CACHE STRING "" FORCE
-    )
-    SET(
-        LAPACK_LIBRARIES
-        ${BLAS_LIBDIR}/openblas.lib
-        CACHE STRING "" FORCE
-    )
-    SET(
-        BLAS_LIBRARIES
-        ${BLAS_LIBDIR}/openblas.lib
-        CACHE STRING "" FORCE
-    )
+# IF(USE_BLAS)
+#     SET(
+#         CMAKE_INCLUDE_PATH
+#         OpenBLAS
+#         CACHE STRING "" FORCE
+#     )
+#     SET(
+#         BLAS_LIBDIR
+#         ${LOCAL_LIB_DIR}/OpenBLAS/lib
+#         CACHE STRING "" FORCE
+#     )
+#     SET(
+#         LAPACK_LIBRARIES
+#         ${BLAS_LIBDIR}/openblas.lib
+#         CACHE STRING "" FORCE
+#     )
+#     SET(
+#         BLAS_LIBRARIES
+#         ${BLAS_LIBDIR}/openblas.lib
+#         CACHE STRING "" FORCE
+#     )
 
-    add_library(
-        BLASLib
-        INTERFACE
-    )
-    target_sources(
-        BLASLib
-        INTERFACE
-        ${LOCAL_LIB_DIR}/OpenBLAS/lib/libopenblas.dll
-    )
-    target_link_libraries(
-        BLASLib
-        INTERFACE
-        ${BLAS_LIBRARIES}
-    )
-    # set_target_properties(
-    #     BLASLib
-    #     PROPERTIES
-    #     LINKER_LANGUAGE C
-    # )
-ENDIF()
+#     add_library(
+#         BLASLib
+#         INTERFACE
+#     )
+#     target_sources(
+#         BLASLib
+#         INTERFACE
+#         ${LOCAL_LIB_DIR}/OpenBLAS/lib/libopenblas.dll
+#     )
+#     target_link_libraries(
+#         BLASLib
+#         INTERFACE
+#         ${BLAS_LIBRARIES}
+#     )
+#     # set_target_properties(
+#     #     BLASLib
+#     #     PROPERTIES
+#     #     LINKER_LANGUAGE C
+#     # )
+# ENDIF()
 
 # --
 

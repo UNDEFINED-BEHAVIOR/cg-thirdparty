@@ -1,0 +1,51 @@
+The system is: Windows - 10.0.18363 - AMD64
+Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+Compiler: C:/Program Files/LLVM/bin/clang.exe 
+Build flags: 
+Id flags:  
+
+The output was:
+0
+
+
+Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.exe"
+
+The C compiler identification is Clang, found in "E:/sandbox/mayaProj/thirdparty/build/CMakeFiles/3.17.3/CompilerIdC/a.exe"
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+Compiler: C:/Program Files/LLVM/bin/clang++.exe 
+Build flags: 
+Id flags:  
+
+The output was:
+0
+
+
+Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "a.exe"
+
+The CXX compiler identification is Clang, found in "E:/sandbox/mayaProj/thirdparty/build/CMakeFiles/3.17.3/CompilerIdCXX/a.exe"
+
+Determining if the C compiler works passed with the following output:
+Change Dir: E:/sandbox/mayaProj/thirdparty/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/bin/ninja.exe cmTC_c6711 && [1/2] Building C object CMakeFiles/cmTC_c6711.dir/testCCompiler.c.obj
+[2/2] Linking C executable cmTC_c6711.exe
+
+
+
+Detecting C compiler ABI info compiled with the following output:
+Change Dir: E:/sandbox/mayaProj/thirdparty/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/bin/ninja.exe cmTC_a17d9 && [1/2] Building C object CMakeFiles/cmTC_a17d9.dir/CMakeCCompilerABI.c.obj
+[2/2] Linking C executable cmTC_a17d9.exe
+
+
+
+Determining if the CXX compiler works passed with the following output:
+Change Dir: E:/sandbox/mayaProj/thirdparty/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/bin/ninja.exe cmTC_d8c57 && [1/2] Building CXX object CMakeFiles/cmTC_d8c57.dir/testCXXCompiler.cxx.obj
+[2/2] Linking CXX executable cmTC_d8c57.exe
+
+
+

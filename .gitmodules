@@ -31,18 +31,6 @@
 [submodule "MayaAPIUtils"]
 	path = MayaAPIUtils
 	url = https://github.com/UNDEFINED-BEHAVIOR/MayaAPIUtils.git
-[submodule "boost-cmake"]
-	path = boost-cmake
-	url = https://github.com/Orphis/boost-cmake.git
-[submodule "icu-cmake"]
-	path = icu-cmake
-	url = https://github.com/viaduck/icu-cmake.git
-[submodule "zlib"]
-	path = zlib
-	url = https://github.com/commontk/zlib.git
-[submodule "bzip2_cmake"]
-	path = bzip2_cmake
-	url = https://github.com/osrf/bzip2_cmake.git
 [submodule "fmt"]
 	path = fmt
 	url = https://github.com/fmtlib/fmt.git
@@ -55,3 +43,18 @@
 [submodule "triSYCL"]
 	path = triSYCL
 	url = https://github.com/UNDEFINED-BEHAVIOR/triSYCL.git
+[submodule "_preinstall/vexcl"]
+	path = _preinstall/vexcl
+	url = https://github.com/ddemidov/vexcl.git
+[submodule "_preinstall/bzip2_cmake"]
+	path = _preinstall/bzip2_cmake
+	url = https://github.com/osrf/bzip2_cmake.git
+[submodule "_preinstall/icu-cmake"]
+	path = _preinstall/icu-cmake
+	url = https://github.com/viaduck/icu-cmake.git
+[submodule "_preinstall/zlib"]
+	path = _preinstall/zlib
+	url = https://github.com/commontk/zlib.git
+[submodule "_preinstall/zstd"]
+	path = _preinstall/zstd
+	url = https://github.com/facebook/zstd.git
