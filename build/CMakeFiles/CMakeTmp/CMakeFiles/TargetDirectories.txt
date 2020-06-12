@@ -1,3 +1,0 @@
-E:/sandbox/mayaProj/thirdparty/build/CMakeFiles/CMakeTmp/CMakeFiles/edit_cache.dir
-E:/sandbox/mayaProj/thirdparty/build/CMakeFiles/CMakeTmp/CMakeFiles/cmTC_50620.dir
-E:/sandbox/mayaProj/thirdparty/build/CMakeFiles/CMakeTmp/CMakeFiles/rebuild_cache.dir
