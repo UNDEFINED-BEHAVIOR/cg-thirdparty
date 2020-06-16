@@ -22,6 +22,8 @@ OPTION(CGTP_LOAD_CPPTASKFLOW "Load cpp-taskflow library" OFF)
 OPTION(CGTP_LOAD_EIGEN "Use eigen3" OFF)
 OPTION(CGTP_LOAD_PYBIND11 "Load pybind11" OFF)
 OPTION(CGTP_LOAD_MAYAAPIUTILS "Load MayaAPIUtils library" OFF)
+OPTION(CGTP_LOAD_XSIMD "Load XSIMD library" OFF)
+OPTION(CGTP_LOAD_XTENSOR "Load XTENSOR library" OFF)
 
 OPTION(CGTP_LOAD_ALL_TARGETS "Load all library targets" OFF)
 
@@ -33,22 +35,29 @@ IF (CGTP_LOAD_ALL_TARGETS)
     SET(CGTP_LOAD_EIGEN ON CACHE BOOL "" FORCE)
     SET(CGTP_LOAD_PYBIND11 ON CACHE BOOL "" FORCE)
     SET(CGTP_LOAD_MAYAAPIUTILS ON CACHE BOOL "" FORCE)
+    SET(CGTP_LOAD_XSIMD ON CACHE BOOL "" FORCE)
+    SET(CGTP_LOAD_XTENSOR ON CACHE BOOL "" FORCE)
 
     # untoggle load all
     SET(CGTP_LOAD_ALL_AUTOLOAD OFF CACHE BOOL "" FORCE)
 ENDIF()
 
+IF (CGTP_LOAD_XTENSOR)
+    SET(CGTP_LOAD_XSIMD ON CACHE BOOL "" FORCE)
+ENDIF()
 
 MESSAGE("---CG Thirdparty Options---")
 MESSAGE("Use BLAS                         : ${CGTP_USE_BLAS}")
 MESSAGE("Mayapy main python interpreter   : ${CGTP_USE_MAYAPY}")
-MESSAGE("fmt targe                        : ${CGTP_USE_FMT_TARGET}")
+MESSAGE("Import fmt library directly      : ${CGTP_USE_FMT_TARGET}")
 MESSAGE("Eigen                            : ${CGTP_LOAD_EIGEN}")
 MESSAGE("units                            : ${CGTP_LOAD_UNITS}")
 MESSAGE("TriSYCL                          : ${CGTP_LOAD_TRISYCL}")
 MESSAGE("cpp-taskflow                     : ${CGTP_LOAD_CPPTASKFLOW}")
 MESSAGE("pybind11                         : ${CGTP_LOAD_PYBIND11}")
 MESSAGE("MayaApiUtils                     : ${CGTP_LOAD_MAYAAPIUTILS}")
+MESSAGE("XSIMD                            : ${CGTP_LOAD_XSIMD}")
+MESSAGE("XTensor                          : ${CGTP_LOAD_XTENSOR}")
 
 # --general envs
 # for boost
