@@ -4,24 +4,54 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.14)
 SET(CMAKE_CXX_STANDARD 17)
 SET(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-OPTION(USE_BLAS "Use blas for all applicable libraries" OFF)
-OPTION(USE_MAYAPY "Use maya python" OFF)
-OPTION(USE_EIGEN "Use eigen3" OFF)
-
-MESSAGE("CG Thirdparty:")
-MESSAGE("BLAS active: ${USE_BLAS}")
-MESSAGE("Using Mayapy as python: ${USE_MAYAPY}")
-MESSAGE("Eigen active: ${USE_EIGEN}")
-
 IF(NOT LOCAL_LIB_DIR)
-    MESSAGE(FATAL "LOCAL_LIB_DIR variable is required")
+    MESSAGE(FATAL " LOCAL_LIB_DIR variable is required")
+ENDIF()
+# SET(_DETECT_BOST_ROOT $ENV{BOOST_ROOT})
+IF(NOT DEFINED ENV{BOOST_ROOT})
+    MESSAGE(FATAL " BOOST_ROOT system environment variable is not set")
 ENDIF()
 
-# ADD_SUBDIRECTORY(boost-cmake)
-# ADD_SUBDIRECTORY(OpenBLAS)
+OPTION(CGTP_USE_BLAS "Use blas for all applicable libraries (WIP)" OFF)
+OPTION(CGTP_USE_MAYAPY "Use maya as primary python interpreter for all packages" OFF)
+OPTION(CGTP_USE_FMT_TARGET "Load fmt library as cmake target directly" OFF)
+
+OPTION(CGTP_LOAD_UNITS "Load units library" OFF)
+OPTION(CGTP_LOAD_TRISYCL "Load trisycl(+openmp +opencl) library" OFF)
+OPTION(CGTP_LOAD_CPPTASKFLOW "Load cpp-taskflow library" OFF)
+OPTION(CGTP_LOAD_EIGEN "Use eigen3" OFF)
+OPTION(CGTP_LOAD_PYBIND11 "Load pybind11" OFF)
+OPTION(CGTP_LOAD_MAYAAPIUTILS "Load MayaAPIUtils library" OFF)
+
+OPTION(CGTP_LOAD_ALL_TARGETS "Load all library targets" OFF)
+
+# resolve option dependency
+IF (CGTP_LOAD_ALL_TARGETS)
+    SET(CGTP_LOAD_UNITS ON CACHE BOOL "" FORCE)
+    SET(CGTP_LOAD_TRISYCL ON CACHE BOOL "" FORCE)
+    SET(CGTP_LOAD_CPPTASKFLOW ON CACHE BOOL "" FORCE)
+    SET(CGTP_LOAD_EIGEN ON CACHE BOOL "" FORCE)
+    SET(CGTP_LOAD_PYBIND11 ON CACHE BOOL "" FORCE)
+    SET(CGTP_LOAD_MAYAAPIUTILS ON CACHE BOOL "" FORCE)
+
+    # untoggle load all
+    SET(CGTP_LOAD_ALL_AUTOLOAD OFF CACHE BOOL "" FORCE)
+ENDIF()
+
+
+MESSAGE("---CG Thirdparty Options---")
+MESSAGE("Use BLAS                         : ${CGTP_USE_BLAS}")
+MESSAGE("Mayapy main python interpreter   : ${CGTP_USE_MAYAPY}")
+MESSAGE("fmt targe                        : ${CGTP_USE_FMT_TARGET}")
+MESSAGE("Eigen                            : ${CGTP_LOAD_EIGEN}")
+MESSAGE("units                            : ${CGTP_LOAD_UNITS}")
+MESSAGE("TriSYCL                          : ${CGTP_LOAD_TRISYCL}")
+MESSAGE("cpp-taskflow                     : ${CGTP_LOAD_CPPTASKFLOW}")
+MESSAGE("pybind11                         : ${CGTP_LOAD_PYBIND11}")
+MESSAGE("MayaApiUtils                     : ${CGTP_LOAD_MAYAAPIUTILS}")
 
 # --general envs
-#boost
+# for boost
 SET(
     BUILD_TESTING OFF 
     CACHE BOOL "" FORCE
@@ -31,8 +61,9 @@ SET(
     CACHE BOOL "" FORCE
 )
 
+# todo: reenable 
 # for openblas
-IF(USE_BLAS)
+IF(CGTP_USE_BLAS)
     SET(
         CMAKE_INCLUDE_PATH
         OpenBLAS
@@ -77,73 +108,46 @@ ENDIF()
 
 # --
 
-ADD_SUBDIRECTORY(fmt)
-ADD_SUBDIRECTORY(units)
+IF(CGTP_LOAD_FMT)
+    ADD_SUBDIRECTORY(fmt)
+ENDIF()
+IF(CGTP_LOAD_UNITS)
+    ADD_SUBDIRECTORY(units)
+ENDIF()
 
 # parallelizer series
+IF(CGTP_LOAD_CPPTASKFLOW)
+    SET(
+        TF_BUILD_TESTS OFF 
+        CACHE BOOL "" FORCE
+    )
+    SET(
+        TF_BUILD_EXAMPLES OFF 
+        CACHE BOOL "" FORCE
+    )
+    ADD_SUBDIRECTORY(cpp-taskflow)
+ENDIF()
 
-SET(
-    TF_BUILD_TESTS OFF 
-    CACHE BOOL "" FORCE
-)
-SET(
-    TF_BUILD_EXAMPLES OFF 
-    CACHE BOOL "" FORCE
-)
-ADD_SUBDIRECTORY(cpp-taskflow)
+IF(CGTP_LOAD_TRISYCL)
+    SET(
+        TRISYCL_OPENCL ON
+        CACHE BOOL "" FORCE
+    )
+    SET(
+        TRISYCL_OPENMP ON
+        CACHE BOOL "" FORCE
+    )
+    ADD_SUBDIRECTORY(triSYCL)
+ENDIF()
 
-SET(
-    TRISYCL_OPENCL ON
-    CACHE BOOL "" FORCE
-)
-SET(
-    TRISYCL_OPENMP ON
-    CACHE BOOL "" FORCE
-)
-ADD_SUBDIRECTORY(triSYCL)
+INCLUDE("CMake_XTensor_Stack.cmake")
 
-# xtensor series
-SET(
-    XTENSOR_USE_XSIMD ON
-    CACHE BOOL "" FORCE
-)
-SET(
-    XTENSOR_USE_OPENMP ON
-    CACHE BOOL "" FORCE
-)
-SET(
-    BUILD_TESTS OFF
-    CACHE BOOL "" FORCE
-)
-SET(
-    BUILD_BENCHMARK OFF
-    CACHE BOOL "" FORCE
-)
-SET(
-    xtl_DIR
-    ${LOCAL_LIB_DIR}/xtl/lib/cmake/xtl
-    CACHE STRING "" FORCE
-)
-SET(
-    xsimd_DIR
-    ${LOCAL_LIB_DIR}/xsimd/lib/cmake/xsimd
-    CACHE STRING "" FORCE
-)
-SET(
-    xtensor_DIR
-    ${LOCAL_LIB_DIR}/xtensor/lib/cmake/xtensor
-    CACHE STRING "" FORCE
-)
-ADD_SUBDIRECTORY(xsimd)
-ADD_SUBDIRECTORY(xtl)
-ADD_SUBDIRECTORY(xtensor)
-
-IF(USE_EIGEN)
+IF(CGTP_LOAD_EIGEN)
     SET(
         EIGEN_TEST_CXX11 ON 
         CACHE BOOL "" FORCE
     )
-    IF(USE_BLAS)
+    IF(CGTP_USE_BLAS)
         SET(
             EIGEN_USE_BLAS ON 
             CACHE BOOL "" FORCE
@@ -160,38 +164,19 @@ IF(USE_EIGEN)
     ADD_SUBDIRECTORY(eigen-git-mirror)
 ENDIF()
 
-
-IF(USE_BLAS)
-    # xtensor
-    SET(
-        USE_OPENBLAS ON
-        CACHE BOOL "" FORCE
-    )
-    ADD_SUBDIRECTORY(xtensor-blas)
-    # todo fix this
-    target_include_directories(
-        xtensor
-        INTERFACE
-        ${LOCAL_LIB_DIR}/xtensor-blas/include
-    )
-    target_link_libraries(
-        xtensor
-        INTERFACE
-        ${BLAS_LIBRARIES}
-        ${LAPACK_LIBRARIES}
-    )
+IF(CGTP_LOAD_MAYAAPIUTILS)
+    ADD_SUBDIRECTORY(MayaAPIUtils)
 ENDIF()
 
+IF(CGTP_LOAD_PYBIND11)
+    IF(CGTP_USE_MAYAPY)
+        find_package(Maya REQUIRED)
+        SET(
+            PYTHON_EXECUTABLE "${MAYA_INCLUDE_DIR}/../bin/mayapy.exe" 
+            CACHE STRING "" FORCE
+        )
+    ENDIF()
 
-IF(USE_MAYAPY)
-    find_package(Maya REQUIRED)
-    SET(
-        PYTHON_EXECUTABLE "${MAYA_INCLUDE_DIR}/../bin/mayapy.exe" 
-        CACHE STRING "" FORCE
-    )
+    SET(PYBIND11_TEST OFF CACHE BOOL "" FORCE)
+    ADD_SUBDIRECTORY(pybind11)
 ENDIF()
-
-ADD_SUBDIRECTORY(MayaAPIUtils)
-
-SET(PYBIND11_TEST OFF CACHE BOOL "" FORCE)
-ADD_SUBDIRECTORY(pybind11)

@@ -72,7 +72,7 @@ REM SET TRISYCL_OPENMP=1
 REM REM SET Boost_ROOT=%BOOST_ROOT%
 REM CALL %ROOT_DIR%_build_for_module.cmd triSYCL
 
-REM CALL %ROOT_DIR%_build_for_module.cmd fmt
+CALL %ROOT_DIR%_build_for_module.cmd fmt
 REM SET EXTRAARGS=-DBoost_ROOT=%BOOST_ROOT%
 CALL %ROOT_DIR%_build_for_module.cmd vexcl
 
