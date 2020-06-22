@@ -178,14 +178,29 @@ IF(CGTP_LOAD_MAYAAPIUTILS)
 ENDIF()
 
 IF(CGTP_LOAD_PYBIND11)
+    SET(PYBIND11_TEST OFF CACHE BOOL "" FORCE)
+
     IF(CGTP_USE_MAYAPY)
-        find_package(Maya REQUIRED)
-        SET(
-            PYTHON_EXECUTABLE "${MAYA_INCLUDE_DIR}/../bin/mayapy.exe" 
-            CACHE STRING "" FORCE
-        )
+        IF(DEFINED MAYA_VERSION)
+            find_package(Maya REQUIRED)
+            SET(
+                PYTHON_EXECUTABLE "${MAYA_INCLUDE_DIR}/../bin/mayapy.exe" 
+                CACHE STRING "" FORCE
+            )
+            ADD_SUBDIRECTORY(pybind11)
+        ELSE()
+            MESSAGE(
+                WARNING 
+                "Attempting to use MAYAPY as python interpreter for pybind11 but MAYA_VERSION variable is not set"
+            )
+        ENDIF()
+    ELSE()
+        ADD_SUBDIRECTORY(pybind11)
     ENDIF()
 
-    SET(PYBIND11_TEST OFF CACHE BOOL "" FORCE)
-    ADD_SUBDIRECTORY(pybind11)
 ENDIF()
+
+find_package(OpenCL)
+find_package(Boost)
+# add_subdirectory(clew-master)
+add_subdirectory(vexcl)
