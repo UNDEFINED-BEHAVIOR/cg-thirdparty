@@ -1,6 +1,6 @@
 # cg-thirdparty
 
-A collection of frequently used thirdparty library for c++ DCC tool development.
+A collection of (almost) ready-to-use thirdparty libraries for c++ DCC tool development.
 
 WIP
 
