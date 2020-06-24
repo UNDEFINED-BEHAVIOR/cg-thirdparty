@@ -15,6 +15,7 @@ ENDIF()
 OPTION(CGTP_USE_BLAS "Use blas for all applicable libraries (WIP)" OFF)
 OPTION(CGTP_USE_MAYAPY "Use maya as primary python interpreter for all packages" OFF)
 OPTION(CGTP_USE_FMT_TARGET "Load fmt library as cmake target directly" OFF)
+OPTION(CGTP_USE_VEXCL_TARGET "Load VexCL library as cmake target directly" OFF)
 
 OPTION(CGTP_LOAD_UNITS "Load units library" OFF)
 OPTION(CGTP_LOAD_TRISYCL "Load trisycl(+openmp +opencl) library" OFF)
@@ -26,6 +27,12 @@ OPTION(CGTP_LOAD_XSIMD "Load XSIMD library" OFF)
 OPTION(CGTP_LOAD_XTENSOR "Load XTENSOR library" OFF)
 
 OPTION(CGTP_LOAD_ALL_TARGETS "Load all library targets" OFF)
+OPTION(CGTP_USE_ALL_AS_TARGETS "Load all applicable library as targets directly" OFF)
+
+IF (CGTP_LOAD_ALL_TARGETS)
+    SET(CGTP_USE_FMT_TARGET ON CACHE BOOL "" FORCE)
+    SET(CGTP_USE_VEXCL_TARGET ON CACHE BOOL "" FORCE)
+ENDIF()
 
 # resolve option dependency
 IF (CGTP_LOAD_ALL_TARGETS)
@@ -49,7 +56,6 @@ ENDIF()
 MESSAGE("---CG Thirdparty Options---")
 MESSAGE("Use BLAS                         : ${CGTP_USE_BLAS}")
 MESSAGE("Mayapy main python interpreter   : ${CGTP_USE_MAYAPY}")
-MESSAGE("Import fmt library directly      : ${CGTP_USE_FMT_TARGET}")
 MESSAGE("Eigen                            : ${CGTP_LOAD_EIGEN}")
 MESSAGE("units                            : ${CGTP_LOAD_UNITS}")
 MESSAGE("TriSYCL                          : ${CGTP_LOAD_TRISYCL}")
@@ -58,6 +64,9 @@ MESSAGE("pybind11                         : ${CGTP_LOAD_PYBIND11}")
 MESSAGE("MayaApiUtils                     : ${CGTP_LOAD_MAYAAPIUTILS}")
 MESSAGE("XSIMD                            : ${CGTP_LOAD_XSIMD}")
 MESSAGE("XTensor                          : ${CGTP_LOAD_XTENSOR}")
+MESSAGE("Load directly as target linkable target:")
+MESSAGE("fmt                              : ${CGTP_USE_FMT_TARGET}")
+MESSAGE("VexCL                            : ${CGTP_USE_VEXCL_TARGET}")
 
 # --general envs
 # for boost
@@ -200,7 +209,8 @@ IF(CGTP_LOAD_PYBIND11)
 
 ENDIF()
 
-find_package(OpenCL)
-find_package(Boost)
-# add_subdirectory(clew-master)
-add_subdirectory(vexcl)
+IF(CGTP_USE_VEXCL_TARGET)
+    find_package(OpenCL)
+    find_package(Boost)
+    add_subdirectory(vexcl)
+ENDIF()
