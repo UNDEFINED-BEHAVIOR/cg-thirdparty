@@ -7,29 +7,12 @@ SET(
     BUILD_BENCHMARK OFF
     CACHE BOOL "" FORCE
 )
-# We have to doe this because cmake does not locate package
-# on it's on on windows
-SET(
-    xtl_DIR
-    ${LOCAL_LIB_DIR}/xtl/lib/cmake/xtl
-    CACHE STRING "" FORCE
-)
-SET(
-    xsimd_DIR
-    ${LOCAL_LIB_DIR}/xsimd/lib/cmake/xsimd
-    CACHE STRING "" FORCE
-)
-SET(
-    xtensor_DIR
-    ${LOCAL_LIB_DIR}/xtensor/lib/cmake/xtensor
-    CACHE STRING "" FORCE
-)
 
 IF(
     CGTP_LOAD_XSIMD OR
     CGTP_LOAD_XTENSOR
 )
-    ADD_SUBDIRECTORY(xtl)
+    FIND_PACKAGE(xtl REQUIRED)
 ENDIF()
 
 IF(CGTP_LOAD_XSIMD)
@@ -46,12 +29,12 @@ IF(CGTP_LOAD_XTENSOR)
         CACHE BOOL "" FORCE
     )
     ADD_SUBDIRECTORY(xtensor)
-    IF(CGTP_LOAD_BLAS)
-        # xtensor
+    IF(CGTP_USE_BLAS)
         SET(
             USE_OPENBLAS ON
             CACHE BOOL "" FORCE
         )
+        # todo confirm this works
         ADD_SUBDIRECTORY(xtensor-blas)
         # todo fix this
         target_include_directories(
