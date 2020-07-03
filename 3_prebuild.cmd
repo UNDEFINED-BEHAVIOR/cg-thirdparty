@@ -51,6 +51,7 @@ REM todo: resolve
 SET EXTRAARGS=-Dxtl_DIR=%LOCAL_LIB_DIR%\xtl\lib\cmake\xtl -Dxtensor_DIR=%LOCAL_LIB_DIR%\xtensor\lib\cmake\xtensor
 CALL %ROOT_DIR%_build_for_module.cmd xtensor-blas
 
+
 REM todo: resolve blas
 REM REM ===========EIGEN
 REM SET EIGEN_TEST_CXX11=1
@@ -73,8 +74,13 @@ REM REM SET Boost_ROOT=%BOOST_ROOT%
 REM CALL %ROOT_DIR%_build_for_module.cmd triSYCL
 
 CALL %ROOT_DIR%_build_for_module.cmd fmt
-REM SET EXTRAARGS=-DBoost_ROOT=%BOOST_ROOT%
 CALL %ROOT_DIR%_build_for_module.cmd vexcl
+
+CALL %ROOT_DIR%_build_for_module.cmd googletest
+
+REM benchmark needs original google test repo
+SET EXTRAARGS=-DGOOGLETEST_PATH=%~dp0googletest
+CALL %ROOT_DIR%_build_for_module.cmd benchmark
 
 REM todo: reenable?
 REM CALL %ROOT_DIR%_build_for_module.cmd tbb

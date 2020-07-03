@@ -16,6 +16,8 @@ OPTION(CGTP_USE_BLAS "Use blas for all applicable libraries (WIP)" OFF)
 OPTION(CGTP_USE_MAYAPY "Use maya as primary python interpreter for all packages" OFF)
 OPTION(CGTP_USE_FMT_TARGET "Load fmt library as cmake target directly" OFF)
 OPTION(CGTP_USE_VEXCL_TARGET "Load VexCL library as cmake target directly" OFF)
+OPTION(CGTP_USE_GOOGLETEST_TARGET "Load googletest library as cmake target directly" OFF)
+OPTION(CGTP_USE_GOOGLEBENCHMARK_TARGET "Load (google)benchmark library as cmake target directly" OFF)
 
 OPTION(CGTP_LOAD_UNITS "Load units library" OFF)
 OPTION(CGTP_LOAD_TRISYCL "Load trisycl(+openmp +opencl) library" OFF)
@@ -29,9 +31,17 @@ OPTION(CGTP_LOAD_XTENSOR "Load XTENSOR library" OFF)
 OPTION(CGTP_LOAD_ALL_TARGETS "Load all library targets" OFF)
 OPTION(CGTP_USE_ALL_AS_TARGETS "Load all applicable library as targets directly" OFF)
 
-IF (CGTP_LOAD_ALL_TARGETS)
+IF (CGTP_USE_GOOGLEBENCHMARK_TARGET)
+    SET(CGTP_USE_GOOGLETEST_TARGET ON CACHE BOOL "" FORCE)
+ENDIF()
+
+IF (CGTP_USE_ALL_AS_TARGETS)
     SET(CGTP_USE_FMT_TARGET ON CACHE BOOL "" FORCE)
     SET(CGTP_USE_VEXCL_TARGET ON CACHE BOOL "" FORCE)
+    SET(CGTP_USE_GOOGLETEST_TARGET ON CACHE BOOL "" FORCE)
+    SET(CGTP_USE_GOOGLEBENCHMARK_TARGET ON CACHE BOOL "" FORCE)
+
+    SET(CGTP_USE_ALL_AS_TARGETS CACHE BOOL "" FORCE)
 ENDIF()
 
 # resolve option dependency
@@ -67,6 +77,8 @@ MESSAGE("XTensor                          : ${CGTP_LOAD_XTENSOR}")
 MESSAGE("Load directly as target linkable target:")
 MESSAGE("fmt                              : ${CGTP_USE_FMT_TARGET}")
 MESSAGE("VexCL                            : ${CGTP_USE_VEXCL_TARGET}")
+MESSAGE("googletest                       : ${CGTP_USE_GOOGLETEST_TARGET}")
+MESSAGE("(google)benchmark                : ${CGTP_USE_GOOGLEBENCHMARK_TARGET}")
 
 # --general envs
 # for boost
@@ -78,6 +90,13 @@ SET(
     CMAKE_TESTING_ENABLED OFF 
     CACHE BOOL "" FORCE
 )
+
+IF(
+    CGTP_USE_VEXCL_TARGET OR
+    CGTP_LOAD_TRISYCL
+)
+    find_package(OpenCL REQUIRED)
+ENDIF()
 
 # todo: reenable 
 # for openblas
@@ -148,7 +167,7 @@ ENDIF()
 
 IF(CGTP_LOAD_TRISYCL)
     SET(
-        TRISYCL_OPENCL ON
+        TRISYCL_OPENCL OFF
         CACHE BOOL "" FORCE
     )
     SET(
@@ -213,4 +232,12 @@ IF(CGTP_USE_VEXCL_TARGET)
     find_package(OpenCL)
     find_package(Boost)
     add_subdirectory(vexcl)
+ENDIF()
+
+IF(CGTP_USE_GOOGLETEST_TARGET)
+    add_subdirectory(googletest)
+ENDIF()
+
+IF(CGTP_USE_GOOGLEBENCHMARK_TARGET)
+    add_subdirectory(benchmark)
 ENDIF()
