@@ -65,7 +65,7 @@ ENDIF()
 
 MESSAGE("---CG Thirdparty Options---")
 MESSAGE("Use BLAS                         : ${CGTP_USE_BLAS}")
-MESSAGE("Mayapy main python interpreter   : ${CGTP_USE_MAYAPY}")
+MESSAGE("Mayapy as main python interpreter: ${CGTP_USE_MAYAPY}")
 MESSAGE("Eigen                            : ${CGTP_LOAD_EIGEN}")
 MESSAGE("units                            : ${CGTP_LOAD_UNITS}")
 MESSAGE("TriSYCL                          : ${CGTP_LOAD_TRISYCL}")
