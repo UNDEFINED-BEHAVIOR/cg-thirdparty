@@ -205,27 +205,25 @@ IF(CGTP_LOAD_MAYAAPIUTILS)
     ADD_SUBDIRECTORY(MayaAPIUtils)
 ENDIF()
 
+IF(CGTP_USE_MAYAPY)
+    IF(DEFINED MAYA_VERSION)
+        FIND_PACKAGE(Maya REQUIRED)
+        SET(
+            PYTHON_EXECUTABLE "${MAYA_INCLUDE_DIR}/../bin/mayapy.exe" 
+            CACHE STRING "" FORCE
+        )
+    ELSE()
+        MESSAGE(
+            WARNING 
+            "Attempting to use MAYAPY as python interpreter 
+            but MAYA_VERSION variable is not set"
+        )
+    ENDIF()
+ENDIF()
+
 IF(CGTP_LOAD_PYBIND11)
     SET(PYBIND11_TEST OFF CACHE BOOL "" FORCE)
-
-    IF(CGTP_USE_MAYAPY)
-        IF(DEFINED MAYA_VERSION)
-            find_package(Maya REQUIRED)
-            SET(
-                PYTHON_EXECUTABLE "${MAYA_INCLUDE_DIR}/../bin/mayapy.exe" 
-                CACHE STRING "" FORCE
-            )
-            ADD_SUBDIRECTORY(pybind11)
-        ELSE()
-            MESSAGE(
-                WARNING 
-                "Attempting to use MAYAPY as python interpreter for pybind11 but MAYA_VERSION variable is not set"
-            )
-        ENDIF()
-    ELSE()
-        ADD_SUBDIRECTORY(pybind11)
-    ENDIF()
-
+    ADD_SUBDIRECTORY(pybind11)
 ENDIF()
 
 IF(CGTP_USE_VEXCL_TARGET)
