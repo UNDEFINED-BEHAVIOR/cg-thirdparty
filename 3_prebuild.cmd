@@ -44,11 +44,14 @@ REM todo: resolve blas
 CALL %ROOT_DIR%_build_for_module.cmd xtl
 CALL %ROOT_DIR%_build_for_module.cmd xsimd
 
-SET EXTRAARGS=-Dxtl_DIR=%LOCAL_LIB_DIR%\xtl\lib\cmake\xtl
+SET EXTRAARGS=^
+-Dxtl_DIR=%LOCAL_LIB_DIR%\xtl\lib\cmake\xtl
 CALL %ROOT_DIR%_build_for_module.cmd xtensor
 
 REM todo: resolve
-SET EXTRAARGS=-Dxtl_DIR=%LOCAL_LIB_DIR%\xtl\lib\cmake\xtl -Dxtensor_DIR=%LOCAL_LIB_DIR%\xtensor\lib\cmake\xtensor
+SET EXTRAARGS=^
+-Dxtl_DIR=%LOCAL_LIB_DIR%\xtl\lib\cmake\xtl ^
+-Dxtensor_DIR=%LOCAL_LIB_DIR%\xtensor\lib\cmake\xtensor
 CALL %ROOT_DIR%_build_for_module.cmd xtensor-blas
 
 
@@ -63,24 +66,36 @@ REM REM ===========
 
 REM CALL %ROOT_DIR%_build_for_module.cmd OpenBLAS
 
-REM SET TF_BUILD_TESTS=0
-REM SET TF_BUILD_SAMPLES=0
-REM CALL %ROOT_DIR%_build_for_module.cmd cpp-taskflow
+SET EXTRAARGS=^
+-DTF_BUILD_TESTS=OFF ^
+-DTF_BUILD_SAMPLES=OFF
+CALL %ROOT_DIR%_build_for_module.cmd cpp-taskflow
 
-REM SET Boost_ROOT=%BOOST_ROOT%
-REM SET TRISYCL_OPENCL=1
-REM SET TRISYCL_OPENMP=1
-REM REM SET Boost_ROOT=%BOOST_ROOT%
-REM CALL %ROOT_DIR%_build_for_module.cmd triSYCL
+SET EXTRAARGS=^
+-DTRISYCL_OPENCL=OFF ^
+-DTRISYCL_OPENMP=ON ^
+-DBoost_ROOT=%BOOST_ROOT%
+CALL %ROOT_DIR%_build_for_module.cmd triSYCL
 
+SET EXTRAARGS=^
+-DFMT_TEST=OFF ^
+-DFMT_FUZZ=OFF ^
+-DFMT_CUDA_TEST=OFF
 CALL %ROOT_DIR%_build_for_module.cmd fmt
+
 CALL %ROOT_DIR%_build_for_module.cmd vexcl
 
 CALL %ROOT_DIR%_build_for_module.cmd googletest
 
 REM benchmark needs original google test repo
-SET EXTRAARGS=-DGOOGLETEST_PATH=%~dp0googletest
+SET EXTRAARGS=^
+-DGOOGLETEST_PATH=%~dp0googletest ^
+-DBENCHMARK_ENABLE_TESTING=OFF
 CALL %ROOT_DIR%_build_for_module.cmd benchmark
+
+SET EXTRAARGS=^
+-DPYBIND11_TEST=OFF
+CALL %ROOT_DIR%_build_for_module.cmd pybind11
 
 REM todo: reenable?
 REM CALL %ROOT_DIR%_build_for_module.cmd tbb
