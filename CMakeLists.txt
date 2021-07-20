@@ -13,7 +13,6 @@ IF(NOT DEFINED ENV{BOOST_ROOT})
 ENDIF()
 
 OPTION(CGTP_USE_BLAS "Use blas for all applicable libraries (WIP)" OFF)
-OPTION(CGTP_USE_MAYAPY "Use maya as primary python interpreter for all packages" OFF)
 OPTION(CGTP_USE_FMT_TARGET "Load fmt library as cmake target directly" OFF)
 OPTION(CGTP_USE_VEXCL_TARGET "Load VexCL library as cmake target directly" OFF)
 OPTION(CGTP_USE_GOOGLETEST_TARGET "Load googletest library as cmake target directly" OFF)
@@ -65,7 +64,6 @@ ENDIF()
 
 MESSAGE("---CG Thirdparty Options---")
 MESSAGE("Use BLAS                         : ${CGTP_USE_BLAS}")
-MESSAGE("Mayapy as main python interpreter: ${CGTP_USE_MAYAPY}")
 MESSAGE("Eigen                            : ${CGTP_LOAD_EIGEN}")
 MESSAGE("units                            : ${CGTP_LOAD_UNITS}")
 MESSAGE("TriSYCL                          : ${CGTP_LOAD_TRISYCL}")
@@ -203,22 +201,6 @@ ENDIF()
 
 IF(CGTP_LOAD_MAYAAPIUTILS)
     ADD_SUBDIRECTORY(MayaAPIUtils)
-ENDIF()
-
-IF(CGTP_USE_MAYAPY)
-    IF(DEFINED MAYA_VERSION)
-        FIND_PACKAGE(Maya REQUIRED)
-        SET(
-            PYTHON_EXECUTABLE "${MAYA_INCLUDE_DIR}/../bin/mayapy.exe" 
-            CACHE STRING "" FORCE
-        )
-    ELSE()
-        MESSAGE(
-            WARNING 
-            "Attempting to use MAYAPY as python interpreter 
-            but MAYA_VERSION variable is not set"
-        )
-    ENDIF()
 ENDIF()
 
 IF(CGTP_LOAD_PYBIND11)
