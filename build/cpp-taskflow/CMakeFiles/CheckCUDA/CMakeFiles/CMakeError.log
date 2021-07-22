@@ -1,0 +1,31 @@
+Compiling the CUDA compiler identification source file "CMakeCUDACompilerId.cu" failed.
+Compiler: C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v10.1/bin/nvcc.exe 
+Build flags: 
+Id flags:  -v;--keep;--keep-dir;tmp
+
+The output was:
+1
+nvcc fatal   : Cannot find compiler 'cl.exe' in PATH
+
+
+Compiling the CUDA compiler identification source file "CMakeCUDACompilerId.cu" failed.
+Compiler: C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v10.1/bin/nvcc.exe 
+Build flags: 
+Id flags:  -v;--keep;--keep-dir;tmp
+
+The output was:
+1
+nvcc fatal   : Cannot find compiler 'cl.exe' in PATH
+
+
+Determining if the CUDA compiler works failed with the following output:
+Change Dir: E:/sandbox/mayaProj/thirdparty/build/cpp-taskflow/CMakeFiles/CheckCUDA/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/bin/ninja.exe cmTC_fcbb6 && [1/2] Building CUDA object CMakeFiles\cmTC_fcbb6.dir\main.cu.obj
+FAILED: CMakeFiles/cmTC_fcbb6.dir/main.cu.obj 
+cmd.exe /C "C:\PROGRA~1\NVIDIA~2\CUDA\v10.1\bin\nvcc.exe     -x cu -c main.cu -o CMakeFiles\cmTC_fcbb6.dir\main.cu.obj && C:\PROGRA~1\NVIDIA~2\CUDA\v10.1\bin\nvcc.exe     -x cu -M main.cu -MT CMakeFiles\cmTC_fcbb6.dir\main.cu.obj -o CMakeFiles\cmTC_fcbb6.dir\main.cu.obj.d"
+nvcc fatal   : Cannot find compiler 'cl.exe' in PATH
+ninja: build stopped: subcommand failed.
+
+
+
