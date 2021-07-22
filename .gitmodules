@@ -10,9 +10,6 @@
 [submodule "tbb"]
 	path = tbb
 	url = https://github.com/intel/tbb.git
-[submodule "pybind11"]
-	path = pybind11
-	url = https://github.com/pybind/pybind11.git
 [submodule "xtensor"]
 	path = xtensor
 	url = https://github.com/QuantStack/xtensor.git
@@ -64,3 +61,6 @@
 [submodule "googletest"]
 	path = googletest
 	url = https://github.com/google/googletest.git
+[submodule "pybind11"]
+	path = pybind11
+	url = https://github.com/UNDEFINED-BEHAVIOR/pybind11.git
